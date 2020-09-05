@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Student\\Desktop\\kdz-api\\HSEApiTraining\\HSEApiTraining.csproj": {}
+    "C:\\Users\\Student\\Desktop\\AMC-Makeathon-2020\\HSEApiTraining.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Student\\Desktop\\kdz-api\\HSEApiTraining\\HSEApiTraining.csproj": {
+    "C:\\Users\\Student\\Desktop\\AMC-Makeathon-2020\\HSEApiTraining.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Student\\Desktop\\kdz-api\\HSEApiTraining\\HSEApiTraining.csproj",
+        "projectUniqueName": "C:\\Users\\Student\\Desktop\\AMC-Makeathon-2020\\HSEApiTraining.csproj",
         "projectName": "HSEApiTraining",
-        "projectPath": "C:\\Users\\Student\\Desktop\\kdz-api\\HSEApiTraining\\HSEApiTraining.csproj",
+        "projectPath": "C:\\Users\\Student\\Desktop\\AMC-Makeathon-2020\\HSEApiTraining.csproj",
         "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Student\\Desktop\\kdz-api\\HSEApiTraining\\obj\\",
+        "outputPath": "C:\\Users\\Student\\Desktop\\AMC-Makeathon-2020\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

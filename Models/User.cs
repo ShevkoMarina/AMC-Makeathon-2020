@@ -46,8 +46,16 @@ namespace HSEApiTraining.Models
 
         public Stream SerializeStream() // Скорее всего тут ошибка
         {
-            Stream stream = Stream.Null;
-            new DataContractJsonSerializer(typeof(User)).WriteObject(stream, this);
+            Stream stream = new MemoryStream();
+            using (var str = new StreamWriter(stream))
+            {
+                new DataContractJsonSerializer(typeof(User)).WriteObject(str.BaseStream, this);
+                if (str.BaseStream.Length == 0)
+                {
+                    throw new System.Exception();
+                }
+            }
+            
             return stream;
         }
         /// <summary>

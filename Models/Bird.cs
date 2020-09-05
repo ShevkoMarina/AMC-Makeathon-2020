@@ -12,7 +12,7 @@ namespace Birds_JSON
         #region Bird's properties
         //-------------Координаты
         [DataMember]
-        public string FirstSeen { get; set; }
+        public string Coords { get; set; }
         //-------------
 
         [DataMember]

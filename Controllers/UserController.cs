@@ -17,13 +17,11 @@ namespace HSEApiTraining.Controllers
     public class UserController : Controller
     {
 
-        // GET api/<controller>/IDшник
         // Отдаёт пользователя по его ID
         [HttpGet("GetUserData/{ID}")]
         public async Task<string> GetUserData(ulong ID)
             => (await AzureDataBase.DownloadUserData(ID)).Serialize();
 
-        // POST api/<controller>
         // Добавляем пользователю
         [HttpPost]
         public async Task<ulong> Post()
@@ -33,15 +31,21 @@ namespace HSEApiTraining.Controllers
             return user.ID;
         }
 
-        // PUT api/<controller>/5
         // Добавляем пользователю птицу
-        [HttpPut("AddBird")]
-        public async Task Put([FromBody] string birdName, [FromBody] ulong userID)
+        [HttpPut("AddBird/{birdName}&{coords}&{userID}")]
+        public async Task<string> Put([FromRoute] string birdName, [FromRoute] string coords, [FromRoute] ulong userID)
         {
-            var bird = await AzureDataBase.DownloadBirdData(birdName);
-            var user = await AzureDataBase.DownloadUserData(userID);
-            user.AddBird(bird);
-            await AzureDataBase.UploadUserData(user);
+            try
+            {
+                var bird = await AzureDataBase.DownloadBirdData(birdName);
+                var user = await AzureDataBase.DownloadUserData(userID);
+
+                bird.Coords = coords;
+                user.AddBird(bird);
+                await AzureDataBase.UploadUserData(user);
+                return "Всё хорошо";
+            }
+            catch (Exception e) { return e.Message; }
         }
         
     }

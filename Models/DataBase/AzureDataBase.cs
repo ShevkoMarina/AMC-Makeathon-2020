@@ -101,7 +101,9 @@ namespace HSEApiTraining.Models.DataBase
 
         #region Upload
         public static async Task UploadUserData(User user)
-            => await UploadData(user.SerializeStream(), user.ID + ".json", "application/json", BlobContainerUsers);
+        {
+            await UploadData(user.SerializeStream(), user.ID + ".json", "application/json", BlobContainerUsers);
+        }
 
         /// <summary>
         /// Загружает любые данные в хранилище Azure
@@ -119,7 +121,7 @@ namespace HSEApiTraining.Models.DataBase
                 await blob.UploadAsync(DataStream, overwrite: true);
                 await blob.SetHttpHeadersAsync(new BlobHttpHeaders() { ContentType = contentType });
             }
-            catch (Exception) { throw new BirdBaseException("Registration is not possible"); }
+            catch (Exception) { throw new BirdBaseException("Uploading is not possible"); }
         }
         #endregion Upload
 
