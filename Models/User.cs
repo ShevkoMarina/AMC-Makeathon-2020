@@ -7,7 +7,6 @@ using Birds_JSON;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace HSEApiTraining.Models
 {
@@ -25,7 +24,7 @@ namespace HSEApiTraining.Models
 
         //----------------Коллекция всех птиц пользователя
         [DataMember]
-        public List<Bird> BirdsCollection { get; set; }
+        public List<string> BirdsCollection { get; set; }
         //----------------
         #endregion
 
@@ -33,31 +32,25 @@ namespace HSEApiTraining.Models
         {
             ID = userAmount;
             userAmount++;
+            BirdsCollection = new List<string>();
         }
 
-        public string Serialize()
-        {
-            //JsonSerializer.Serialize(this, new JsonSerializerOptions() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)});
-            //JsonSerializer.SerializeToUtf8Bytes();
-            //----------------
-            return JsonConvert.SerializeObject(this);
-            //return JsonSerializer.Serialize(this, new JsonSerializerOptions() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All) });
-        }
+        public string Serialize() => JsonSerializer.Serialize(this);
 
-        public Stream SerializeStream() // Скорее всего тут ошибка
+
+        public Stream SerializeStream()
+            => GenerateStreamFromString(JsonSerializer.Serialize(this));
+
+        public static Stream GenerateStreamFromString(string s)
         {
-            Stream stream = new MemoryStream();
-            using (var str = new StreamWriter(stream))
-            {
-                new DataContractJsonSerializer(typeof(User)).WriteObject(str.BaseStream, this);
-                if (str.BaseStream.Length == 0)
-                {
-                    throw new System.Exception();
-                }
-            }
-            
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
             return stream;
         }
+
         /// <summary>
         /// Проверка на идентичность 2-х пользователей. 
         /// Осуществляется путём сравнения логина и пароля.
@@ -69,7 +62,7 @@ namespace HSEApiTraining.Models
         //     && Password == ((User)obj).Password;
 
 
-        public void AddBird(Bird bird) =>
+        public void AddBird(string bird) =>
             BirdsCollection.Add(bird);
 
     }

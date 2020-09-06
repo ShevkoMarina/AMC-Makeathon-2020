@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <parameter name="IIS Web Application Name" description="" value="HSEApiTraining20200905085422" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Student\\Desktop\\kdz-api\\HSEApiTraining\\obj\\Release\\netcoreapp2\.1\\PubTmp\\Out\\$" />
+  <parameter name="IIS Web Application Name" description="" value="HSEApiTraining20200906011224" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Vitaly\\Desktop\\gits\\AMC-Makeathon-2020\\obj\\Release\\netcoreapp2\.1\\PubTmp\\Out\\$" />
   </parameter>
 </parameters>

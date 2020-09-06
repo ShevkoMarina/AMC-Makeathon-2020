@@ -26,7 +26,7 @@ namespace HSEApiTraining.Controllers
         {
             try
             {
-                return (await AzureDataBase.DownloadBirdData(name)).Serialize();
+                return await AzureDataBase.DownloadBirdDataString(name);
             }
             catch (BirdBaseException e) { return "Ошибка: " + e.Message; }
             catch (Exception) { return "Неизвестная ошибка"; }

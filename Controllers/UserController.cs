@@ -9,8 +9,6 @@ using HSEApiTraining.Models;
 using Microsoft.AspNetCore.Mvc;
 using HSEApiTraining.Models.DataBase;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace HSEApiTraining.Controllers
 {
     [Route("api/[controller]")]
@@ -20,7 +18,8 @@ namespace HSEApiTraining.Controllers
         // Отдаёт пользователя по его ID
         [HttpGet("GetUserData/{ID}")]
         public async Task<string> GetUserData(ulong ID)
-            => (await AzureDataBase.DownloadUserData(ID)).Serialize();
+            => await AzureDataBase.DownloadUserDataString(ID);
+        //=> (await AzureDataBase.DownloadUserData(ID)).Serialize();
 
         // Добавляем пользователю
         [HttpPost]
@@ -37,16 +36,19 @@ namespace HSEApiTraining.Controllers
         {
             try
             {
-                var bird = await AzureDataBase.DownloadBirdData(birdName);
+                var bird = await AzureDataBase.DownloadBirdDataString(birdName);
                 var user = await AzureDataBase.DownloadUserData(userID);
 
-                bird.Coords = coords;
+                bird.Insert(1, "\"Coords\":\"" + coords + "\",");
+
                 user.AddBird(bird);
+                //bird.Coords = coords;
+                //user.AddBird(bird);
                 await AzureDataBase.UploadUserData(user);
                 return "Всё хорошо";
             }
             catch (Exception e) { return e.Message; }
         }
-        
+
     }
 }

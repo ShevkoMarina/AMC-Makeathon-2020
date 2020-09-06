@@ -16,86 +16,10 @@ namespace HSEApiTraining.Models.DataBase
 {
     public class AzureDataBase
     {
-        #region BaseInteraction
-        /// <summary>
-        /// Алгоритм аутентификация пользователя.
-        /// Является проверкой идентификации полей логина и пароля 
-        /// у введённого пользователя и о его представлении в базе данных. 
-        /// </summary>
-        /// <returns>Заключение проверки</returns>
-        //public async Task<bool> Authentication(User ProofUser)
-        //{
-        //    User user = new User("", "");
-        //    try
-        //    {
-        //        //user = await DownloadUserData(ProofUser);
-        //    }
-        //    catch (Exception) { throw new BirdBaseException("Account is not exist"); }
-
-        //    if (ProofUser.Equals(user)) return true;
-        //    throw new BirdBaseException("Incorrect password");
-        //}
-        /// <summary>
-        /// Регистрация нового пользователя.
-        /// </summary>
-        /// <param name="newUser">Представление о пользователе</param>
-        //public async Task Registration(User NewUser)
-        //{
-        //    if (await UserExistence(NewUser))
-        //        throw new BirdBaseException("Non unique login");
-        //    //await UploadUserData(NewUser);
-        //}
-        /// <summary>
-        /// Изменяет данные пользователя в базе данных.
-        /// </summary>
-        /// <param name="CurrentUser">Текущее представление о пользователе, чьи данные будут изменены</param>
-        /// <param name="changedUser">Новые данные пользователя</param>
-        //public async void UpdateData(User CurrentUser, User changedUser)
-        //{
-        //    //await UploadUserData(changedUser);
-        //}
-        /// <summary>
-        /// Получает всех пользователей из хранилища Azure 
-        /// для демонстрации работы программы.
-        /// </summary>
-        /// <returns>пользователи</returns>
-        //public static async Task<List<User>> GetUsers()
-        //{
-        //    var users = new List<User>();
-        //    foreach (var blob in BlobContainer.GetBlobs())
-        //    {
-        //        if (!blob.Name.Contains("/"))
-        //        {
-        //            //User userDB = await new AzureDataBase().DownloadUserData(new User(blob.Name.Replace(".xml", ""), ""));
-        //            //if (userDB.FaceID != null)
-        //            //    userDB.Portrait = (byte[])new ImageConverter().ConvertTo(
-        //            //                                new Bitmap(await DownloadPortrait(userDB)), typeof(byte[]));
-        //            //users.Add(userDB);
-        //        }
-        //    }
-        //    return users;
-        //}
-        /// <summary>
-        /// Проверяет, существует ли пользователь в базе данных.
-        /// </summary>
-        /// <param name="user">Пользователь, существование которого необходимо проверить</param>
-        /// <returns>Заключение проверки</returns>
-        //private static async Task<bool> UserExistence(User user)
-        //{
-        //    try
-        //    {
-        //        return (await BlobContainer
-        //          .GetBlobClient(user.Login + ".xml")
-        //          .DownloadAsync()).Value.ContentLength != 0;
-        //    }
-        //    catch (Exception) { return false; }
-        //}
-        #endregion BaseInteraction
-
         #region Secrets
         private const string connectionString = "DefaultEndpointsProtocol=https;AccountName=ornithologicalvault;AccountKey=7gZjHzPZPFy/EaKM9ZCPh9iwoDcCy/PW8azghWLI3i/IjFwmV2dp13VwfVI67m/2ycnBLzn1Xyi+EQhyFStCBg==;EndpointSuffix=core.windows.net";
-        private readonly static BlobContainerClient BlobContainerUsers = new BlobServiceClient(connectionString).GetBlobContainerClient("accounts");
-        private readonly static BlobContainerClient BlobContainerBirds = new BlobServiceClient(connectionString).GetBlobContainerClient("birds");
+        public readonly static BlobContainerClient BlobContainerUsers = new BlobServiceClient(connectionString).GetBlobContainerClient("accounts");
+        public readonly static BlobContainerClient BlobContainerBirds = new BlobServiceClient(connectionString).GetBlobContainerClient("birds");
 
         #endregion Secrets
 
@@ -134,10 +58,39 @@ namespace HSEApiTraining.Models.DataBase
             => (User)new DataContractJsonSerializer(typeof(User))
                 .ReadObject(await DownloadData(userID + ".json", BlobContainerUsers));
 
+        public async static Task<string> DownloadUserDataString(ulong userID)
+        {
+            string result;
+            using (var allbirdsStream = new StreamReader(await DownloadData(userID + ".json", BlobContainerUsers)))
+                result = allbirdsStream.ReadToEnd();
+
+            return result;
+        }
+
+
         /// <summary>
         /// Скачивает данные птицы
         /// </summary>
         /// <returns>Данные пользователя</returns>
+        public async static Task<string> DownloadBirdDataString(string name)
+        {
+            try
+            {
+                string result;
+                using (var allbirdsStream = new StreamReader(await DownloadData(name + ".json", BlobContainerBirds)))
+                    result = allbirdsStream.ReadToEnd();
+
+                return result;
+            }
+            catch (BirdBaseException e) { throw e; }
+            catch (Exception e) { throw new BirdBaseException("Метод: DownloadBirdData ][ текст ошибки: " + e.Message); }
+        }
+
+        /// <summary>
+        /// Скачиваем и переводим в объект Bird
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async static Task<Bird> DownloadBirdData(string name)
         {
             try
@@ -170,7 +123,7 @@ namespace HSEApiTraining.Models.DataBase
                 //await BlobContainer.GetBlobsAsync();
             }
             catch (Exception e) { throw new BirdBaseException("Метод: DownloadData ][ текст ошибки: " + "____ В БД НЕТ ФАЙЛОВ ____"); }
-        
+
 
             try
             {
@@ -184,9 +137,78 @@ namespace HSEApiTraining.Models.DataBase
     }
 }
 
-/*
- * 
- * https://ornithologicalvault.blob.core.windows.net/birds/   %D0%96%D1%91%D0%BB%D1%82%D0%BE%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0%D1%8F%20%D1%82%D1%80%D1%8F%D1%81%D0%BE%D0%B3%D1%83%D0%B7%D0%BA%D0%B0%20(Motacilla%20citreola)_199.json
- * https://ornithologicalvault.blob.core.windows.net/birds/%20%D0%96%D1%91%D0%BB%D1%82%D0%BE%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0%D1%8F%20%D1%82%D1%80%D1%8F%D1%81%D0%BE%D0%B3%D1%83%D0%B7%D0%BA%D0%B0%20(Motacilla%20citreola)_199.json
- * 
- */
+#region BaseInteraction
+/// <summary>
+/// Алгоритм аутентификация пользователя.
+/// Является проверкой идентификации полей логина и пароля 
+/// у введённого пользователя и о его представлении в базе данных. 
+/// </summary>
+/// <returns>Заключение проверки</returns>
+//public async Task<bool> Authentication(User ProofUser)
+//{
+//    User user = new User("", "");
+//    try
+//    {
+//        //user = await DownloadUserData(ProofUser);
+//    }
+//    catch (Exception) { throw new BirdBaseException("Account is not exist"); }
+
+//    if (ProofUser.Equals(user)) return true;
+//    throw new BirdBaseException("Incorrect password");
+//}
+/// <summary>
+/// Регистрация нового пользователя.
+/// </summary>
+/// <param name="newUser">Представление о пользователе</param>
+//public async Task Registration(User NewUser)
+//{
+//    if (await UserExistence(NewUser))
+//        throw new BirdBaseException("Non unique login");
+//    //await UploadUserData(NewUser);
+//}
+/// <summary>
+/// Изменяет данные пользователя в базе данных.
+/// </summary>
+/// <param name="CurrentUser">Текущее представление о пользователе, чьи данные будут изменены</param>
+/// <param name="changedUser">Новые данные пользователя</param>
+//public async void UpdateData(User CurrentUser, User changedUser)
+//{
+//    //await UploadUserData(changedUser);
+//}
+/// <summary>
+/// Получает всех пользователей из хранилища Azure 
+/// для демонстрации работы программы.
+/// </summary>
+/// <returns>пользователи</returns>
+//public static async Task<List<User>> GetUsers()
+//{
+//    var users = new List<User>();
+//    foreach (var blob in BlobContainer.GetBlobs())
+//    {
+//        if (!blob.Name.Contains("/"))
+//        {
+//            //User userDB = await new AzureDataBase().DownloadUserData(new User(blob.Name.Replace(".xml", ""), ""));
+//            //if (userDB.FaceID != null)
+//            //    userDB.Portrait = (byte[])new ImageConverter().ConvertTo(
+//            //                                new Bitmap(await DownloadPortrait(userDB)), typeof(byte[]));
+//            //users.Add(userDB);
+//        }
+//    }
+//    return users;
+//}
+/// <summary>
+/// Проверяет, существует ли пользователь в базе данных.
+/// </summary>
+/// <param name="user">Пользователь, существование которого необходимо проверить</param>
+/// <returns>Заключение проверки</returns>
+//private static async Task<bool> UserExistence(User user)
+//{
+//    try
+//    {
+//        return (await BlobContainer
+//          .GetBlobClient(user.Login + ".xml")
+//          .DownloadAsync()).Value.ContentLength != 0;
+//    }
+//    catch (Exception) { return false; }
+//}
+#endregion BaseInteraction

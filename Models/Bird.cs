@@ -43,8 +43,8 @@ namespace Birds_JSON
         public string Meal { get; set; }
         #endregion
 
-        public Bird(string name, string color, string size, string picture, string sound, 
-            string familia, string ordo, string genus)
+        public Bird(string name, string color, string size, string picture, string sound,
+                    string familia, string ordo, string genus)
         {
             Name = name;
             Color = color;
@@ -58,17 +58,14 @@ namespace Birds_JSON
 
         public override string ToString()
             => $"{Familia} {Meal}";
-        
 
-        public string Serialize()
+
+        public string Serialize() // Переводит корректный this [Экземпляр класса Bird] в не ту кодировку
         {
             //string result = "JSON для проверки";
-            
-            
             //using (var stream = Stream.Null)
             //{
             //    new DataContractJsonSerializer(typeof(Bird)).WriteObject(stream, this);
-
             //    using (var streamReader = new StreamReader(stream))
             //    {
             //        result = streamReader.ReadToEnd();
@@ -76,7 +73,6 @@ namespace Birds_JSON
             //}
             return JsonSerializer.Serialize(this);
         }
-
 
     }
 }
