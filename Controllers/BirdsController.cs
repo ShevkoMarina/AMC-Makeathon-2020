@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HSEApiTraining.Models.DataBase;
 using Birds_JSON;
-using System.Text.Json;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.IO;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HSEApiTraining.Controllers
 {
@@ -30,11 +27,15 @@ namespace HSEApiTraining.Controllers
         {
             try
             {
-                return (await AzureDataBase.DownloadBirdData(name)).Serialize();
+                List<Bird> allBirds = (List<Bird>)new DataContractJsonSerializer(typeof(List<Bird>))
+                                      .ReadObject(await AzureDataBase.DownloadData("все_птицы.json", AzureDataBase.BlobContainerBirds));
+
+                return (allBirds.Where(x => x.Name.Contains(name)).Distinct().First()).Serialize();
+
+                //return (await AzureDataBase.DownloadBirdData(name)).Serialize();
             }
             catch (BirdBaseException e) { return "Ошибка: " + e.Message; }
             catch (Exception) { return "Неизвестная ошибка"; }
-
         }
 
         [HttpGet("{color}&{size}")]
@@ -50,9 +51,6 @@ namespace HSEApiTraining.Controllers
 
                 // Фильтруем птиц
                 List<Bird> found_birds = allBirds.Where(x => x.Color.Contains(color) && x.Size.Contains(size)).GroupBy(x => x.Name).Select(g => g.First()).ToList();
-
-                //if (color != "") allBirds = allBirds.Where(bird => bird.Color == color).ToList();
-                //if (size != "") allBirds = allBirds.Where(bird => bird.Color == color).ToList();
 
                 // Сереализуем массив и отправляем обратно
                 var ms = new MemoryStream();
