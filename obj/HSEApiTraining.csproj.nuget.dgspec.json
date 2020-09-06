@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\irazy.LAPTOP-2DA2ESSA\\Documents\\GitLab\\AMC-Makeathon-2020\\HSEApiTraining.csproj": {}
+    "C:\\Users\\Vitaly\\Desktop\\gits\\AMC-Makeathon-2020\\HSEApiTraining.csproj": {}
   },
   "projects": {
-    "C:\\Users\\irazy.LAPTOP-2DA2ESSA\\Documents\\GitLab\\AMC-Makeathon-2020\\HSEApiTraining.csproj": {
+    "C:\\Users\\Vitaly\\Desktop\\gits\\AMC-Makeathon-2020\\HSEApiTraining.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\irazy.LAPTOP-2DA2ESSA\\Documents\\GitLab\\AMC-Makeathon-2020\\HSEApiTraining.csproj",
+        "projectUniqueName": "C:\\Users\\Vitaly\\Desktop\\gits\\AMC-Makeathon-2020\\HSEApiTraining.csproj",
         "projectName": "HSEApiTraining",
-        "projectPath": "C:\\Users\\irazy.LAPTOP-2DA2ESSA\\Documents\\GitLab\\AMC-Makeathon-2020\\HSEApiTraining.csproj",
-        "packagesPath": "C:\\Users\\irazy.LAPTOP-2DA2ESSA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\irazy.LAPTOP-2DA2ESSA\\Documents\\GitLab\\AMC-Makeathon-2020\\obj\\",
+        "projectPath": "C:\\Users\\Vitaly\\Desktop\\gits\\AMC-Makeathon-2020\\HSEApiTraining.csproj",
+        "packagesPath": "C:\\Users\\Vitaly\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Vitaly\\Desktop\\gits\\AMC-Makeathon-2020\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\PROGRAM FILES\\DOTNET\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\irazy.LAPTOP-2DA2ESSA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Vitaly\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -94,7 +97,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\PROGRAM FILES\\DOTNET\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

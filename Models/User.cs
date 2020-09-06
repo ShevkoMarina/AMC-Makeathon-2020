@@ -21,10 +21,13 @@ namespace HSEApiTraining.Models
         //public string Password { get; private set; }
         [DataMember]
         public ulong ID { get; set; }
+        [DataMember]
+        public ulong LVL { get; set; }
+
 
         //----------------Коллекция всех птиц пользователя
         [DataMember]
-        public List<string> BirdsCollection { get; set; }
+        public List<Bird> BirdsCollection { get; set; }
         //----------------
         #endregion
 
@@ -32,10 +35,21 @@ namespace HSEApiTraining.Models
         {
             ID = userAmount;
             userAmount++;
-            BirdsCollection = new List<string>();
+            BirdsCollection = new List<Bird>();
         }
 
-        public string Serialize() => JsonSerializer.Serialize(this);
+        public string Serialize()
+        {
+            // Create a stream to serialize the object to.
+            var ms = new MemoryStream();
+
+            // Serializer the User object to the stream.
+            var ser = new DataContractJsonSerializer(typeof(User));
+            ser.WriteObject(ms, this);
+            byte[] json = ms.ToArray();
+            ms.Close();
+            return Encoding.UTF8.GetString(json, 0, json.Length);
+        }
 
 
         public Stream SerializeStream()
@@ -62,7 +76,7 @@ namespace HSEApiTraining.Models
         //     && Password == ((User)obj).Password;
 
 
-        public void AddBird(string bird) =>
+        public void AddBird(Bird bird) =>
             BirdsCollection.Add(bird);
 
     }

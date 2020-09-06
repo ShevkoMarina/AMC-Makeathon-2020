@@ -18,8 +18,7 @@ namespace HSEApiTraining.Controllers
         // Отдаёт пользователя по его ID
         [HttpGet("GetUserData/{ID}")]
         public async Task<string> GetUserData(ulong ID)
-            => await AzureDataBase.DownloadUserDataString(ID);
-        //=> (await AzureDataBase.DownloadUserData(ID)).Serialize();
+            => (await AzureDataBase.DownloadUserData(ID)).Serialize();
 
         // Добавляем пользователю
         [HttpPost]
@@ -36,14 +35,13 @@ namespace HSEApiTraining.Controllers
         {
             try
             {
-                var bird = await AzureDataBase.DownloadBirdDataString(birdName);
+                var bird = await AzureDataBase.DownloadBirdData(birdName);
                 var user = await AzureDataBase.DownloadUserData(userID);
 
-                bird.Insert(1, "\"Coords\":\"" + coords + "\",");
-
+                bird.Coords = coords;
                 user.AddBird(bird);
-                //bird.Coords = coords;
-                //user.AddBird(bird);
+                if (user.BirdsCollection.Count % 5 == 0)
+                    user.LVL++;
                 await AzureDataBase.UploadUserData(user);
                 return "Всё хорошо";
             }

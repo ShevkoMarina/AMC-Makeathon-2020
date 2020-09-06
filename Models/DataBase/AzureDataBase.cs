@@ -58,33 +58,33 @@ namespace HSEApiTraining.Models.DataBase
             => (User)new DataContractJsonSerializer(typeof(User))
                 .ReadObject(await DownloadData(userID + ".json", BlobContainerUsers));
 
-        public async static Task<string> DownloadUserDataString(ulong userID)
-        {
-            string result;
-            using (var allbirdsStream = new StreamReader(await DownloadData(userID + ".json", BlobContainerUsers)))
-                result = allbirdsStream.ReadToEnd();
+        //public async static Task<string> DownloadUserDataString(ulong userID)
+        //{
+        //    string result;
+        //    using (var allbirdsStream = new StreamReader(await DownloadData(userID + ".json", BlobContainerUsers)))
+        //        result = allbirdsStream.ReadToEnd();
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
         /// <summary>
         /// Скачивает данные птицы
         /// </summary>
         /// <returns>Данные пользователя</returns>
-        public async static Task<string> DownloadBirdDataString(string name)
-        {
-            try
-            {
-                string result;
-                using (var allbirdsStream = new StreamReader(await DownloadData(name + ".json", BlobContainerBirds)))
-                    result = allbirdsStream.ReadToEnd();
+        //public async static Task<string> DownloadBirdDataString(string name)
+        //{
+        //    try
+        //    {
+        //        string result;
+        //        using (var allbirdsStream = new StreamReader(await DownloadData(name + ".json", BlobContainerBirds)))
+        //            result = allbirdsStream.ReadToEnd();
 
-                return result;
-            }
-            catch (BirdBaseException e) { throw e; }
-            catch (Exception e) { throw new BirdBaseException("Метод: DownloadBirdData ][ текст ошибки: " + e.Message); }
-        }
+        //        return result;
+        //    }
+        //    catch (BirdBaseException e) { throw e; }
+        //    catch (Exception e) { throw new BirdBaseException("Метод: DownloadBirdData ][ текст ошибки: " + e.Message); }
+        //}
 
         /// <summary>
         /// Скачиваем и переводим в объект Bird
